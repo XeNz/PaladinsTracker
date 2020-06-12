@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <RootNamespace>PaladinsTracker.Shared</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup>
+    <BlazorWebAssemblyEnableLinking>false</BlazorWebAssemblyEnableLinking>
+  </PropertyGroup>
+  <Target Name="_RemoveSatelliteAssemblies" BeforeTargets="_ResolveBlazorRuntimeDependencies">
+    <ItemGroup>
+      <_BlazorDependencyInput Remove="@(_BlazorDependencyInput-&gt;WithMetadataValue('AssetType', 'resources'))" />
+    </ItemGroup>
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+  </ItemGroup>
+
+</Project>

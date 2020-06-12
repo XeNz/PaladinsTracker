@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>1.2.0</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyVersion>1.2.0.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <Authors>taskbit</Authors>
+    <Description>.NET Standard HiRez API Library (Access data from the HiRez API)</Description>
+    <Copyright>Copyright 2018 (c) taskbit. All rights reserved.</Copyright>
+    <PackageLicenseUrl>https://github.com/taskbit/HiRezApi/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/taskbit/HiRezApi</PackageProjectUrl>
+    <PackageReleaseNotes />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0;PORTABLE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.11" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+</Project>

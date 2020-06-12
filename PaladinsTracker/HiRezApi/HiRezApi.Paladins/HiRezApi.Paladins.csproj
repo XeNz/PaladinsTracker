@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>HiRezApi.Paladins</PackageId>
+    <Version>1.2.0</Version>
+    <Title>HiRez Paladins API</Title>
+    <Authors>taskbit</Authors>
+    <Owners>taskbit</Owners>
+    <Company />
+    <Description>.NET Standard Paladins API Library (Access data from the game Paladins)</Description>
+    <Copyright>Copyright 2018 (c) taskbit. All rights reserved.</Copyright>
+    <RequireLicenseAcceptance>False</RequireLicenseAcceptance>
+    <IncludeSymbols>True</IncludeSymbols>
+    <IncludeBuildOutput>True</IncludeBuildOutput>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/taskbit/HiRezApi</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/taskbit/HiRezApi/blob/master/LICENSE</PackageLicenseUrl>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeAssets</TargetsForTfmSpecificBuildOutput>
+    <PackageReleaseNotes>- Refactored common library</PackageReleaseNotes>
+
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HiRezApi.Common\HiRezApi.Common.csproj">
+      <PackageDirectory>Lib</PackageDirectory>
+    </ProjectReference>
+  </ItemGroup>
+
+  <Target Name="IncludeAssets">
+    <ItemGroup>
+      <BuildOutputInPackage Include="$(OutputPath)HiRezApi.Common.dll" />
+    </ItemGroup>
+  </Target>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.11" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+</Project>

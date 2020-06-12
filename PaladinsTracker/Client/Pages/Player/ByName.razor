@@ -1,0 +1,33 @@
+﻿@page "/player"
+@using PaladinsTracker.Shared.Models.Dto
+@inject HttpClient httpClient
+
+<TextEdit @bind-Text="@playerName"/>
+<Button Color="Color.Primary" Clicked="@GetPlayer">Get player</Button>
+
+@if (player != null)
+{
+    <Card>
+        @* <CardImage Source="/assets/images/gallery/9.jpg" Alt="Placeholder image"> *@
+        @* </CardImage> *@
+        <CardBody Size="Medium" Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
+            <CardTitle Size="5">@player.Name</CardTitle>
+            <CardSubtitle><p>Matches played: {@player.Wins + @player.Losses}</p> <p>Wins: @player.Wins - Losses: @player.Losses</p></CardSubtitle>
+            <CardText>
+                Region: @player.Region
+            </CardText>
+        </CardBody>
+    </Card>
+    
+}
+
+@code {
+    string playerName = null;
+    PlayerDto player = null;
+
+    async Task GetPlayer()
+    {
+        player = await httpClient.GetFromJsonAsync<PlayerDto>($"api/players?name={playerName}");
+    }
+
+}
