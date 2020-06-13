@@ -2,24 +2,37 @@
 @using PaladinsTracker.Shared.Models.Dto
 @inject HttpClient httpClient
 
-<TextEdit @bind-Text="@playerName"/>
-<Button Color="Color.Primary" Clicked="@GetPlayer">Get player</Button>
+<Container Fluid>
+    <Row>
+        <Column ColumnSize="ColumnSize.Is5">
+            <TextEdit @bind-Text="@playerName"/>
+            <Button Color="Color.Primary" Clicked="@GetPlayer">Get player</Button>
+        </Column>.
+    </Row>
+    <Row>
+        <Column ColumnSize="ColumnSize.Is5">
+            @if (player != null)
+            {
+                <Card>
+                    @* <CardImage Source="/assets/images/gallery/9.jpg" Alt="Placeholder image"> *@
+                    @* </CardImage> *@
+                    <CardBody Size="Medium" Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
+                        <CardTitle Size="5">@player.Name</CardTitle>
+                        <CardSubtitle>
+                            <p>Matches played: {@player.Wins + @player.Losses}</p>
+                            <p>Wins: @player.Wins - Losses: @player.Losses</p>
+                        </CardSubtitle>
+                        <CardText>
+                            Region: @player.Region
+                        </CardText>
+                    </CardBody>
+                </Card>
+            }
+        </Column>
+    </Row>
 
-@if (player != null)
-{
-    <Card>
-        @* <CardImage Source="/assets/images/gallery/9.jpg" Alt="Placeholder image"> *@
-        @* </CardImage> *@
-        <CardBody Size="Medium" Margin="Margin.Is2.OnMobile.Is5.OnDesktop">
-            <CardTitle Size="5">@player.Name</CardTitle>
-            <CardSubtitle><p>Matches played: {@player.Wins + @player.Losses}</p> <p>Wins: @player.Wins - Losses: @player.Losses</p></CardSubtitle>
-            <CardText>
-                Region: @player.Region
-            </CardText>
-        </CardBody>
-    </Card>
-    
-}
+
+</Container>
 
 @code {
     string playerName = null;
