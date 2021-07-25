@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using AutoMapper;
 using HiRezApi.Common;
 using HiRezApi.Paladins;
@@ -11,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Microsoft.Rest.TransientFaultHandling;
 using PaladinsTracker.Server.Configuration;
@@ -20,6 +18,8 @@ using PaladinsTracker.Server.DependencyInjection;
 using PaladinsTracker.Server.Logging;
 using PaladinsTracker.Server.Mappers;
 using PaladinsTracker.Server.Middleware;
+using Utf8Json.AspNetCoreMvcFormatter;
+using Utf8Json.Resolvers;
 
 namespace PaladinsTracker.Server
 {
@@ -48,9 +48,15 @@ namespace PaladinsTracker.Server
             services.AddTransient<IPaladinsApiClient, PaladinsApiClient>(x => CreatePaladinsApiClient(x));
             services.AddTransient<IExternalServiceTimer, ExternalServiceTimer>();
             services.AddHttpContextAccessor();
-            services.AddControllers().AddNewtonsoftJson();
-            services.AddControllersWithViews();
-            services.AddRazorPages();
+            services.AddControllers().AddMvcOptions(options =>
+            {
+                options.OutputFormatters.Clear();
+                // can pass IJsonFormatterResolver for customize.
+                options.OutputFormatters.Add(new JsonOutputFormatter(StandardResolver.CamelCase));
+                options.InputFormatters.Clear();
+                // if does not pass, library should use JsonSerializer.DefaultResolver.
+                options.InputFormatters.Add(new JsonInputFormatter());
+            });
             services.AddSingleton(sp => _mapperConfiguration.CreateMapper());
             services.AddCacheServices(Configuration);
         }
@@ -64,7 +70,6 @@ namespace PaladinsTracker.Server
             if (env.IsDevelopment())
             {
                 // app.UseDeveloperExceptionPage();
-                app.UseWebAssemblyDebugging();
             }
             else
             {
@@ -74,18 +79,12 @@ namespace PaladinsTracker.Server
             }
 
             app.UseHttpsRedirection();
-            app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
 
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapRazorPages();
-                endpoints.MapControllers();
-                endpoints.MapFallbackToFile("index.html");
-            });
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
 
         private PaladinsApiClient CreatePaladinsApiClient(IServiceProvider p)

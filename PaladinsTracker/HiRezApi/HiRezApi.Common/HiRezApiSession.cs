@@ -1,16 +1,16 @@
-﻿namespace HiRezApi.Common
-{
-    using System;
-    using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
+namespace HiRezApi.Common
+{
     public sealed class HiRezApiSession : IEquatable<HiRezApiSession>
     {
         internal HiRezApiSession(DateTime createdAt, string sessionId, Platform platform, ITimeStampProvider timeStampProvider)
         {
-            this.Platform = platform;
-            this.CreatedAt = createdAt;
-            this.SessionId = sessionId;
-            this.TimeStampProvider = timeStampProvider ?? new DateTimeUtcTimeStampProvider();
+            Platform = platform;
+            CreatedAt = createdAt;
+            SessionId = sessionId;
+            TimeStampProvider = timeStampProvider ?? new DateTimeUtcTimeStampProvider();
         }
 
         internal HiRezApiSession()
@@ -21,8 +21,8 @@
         public DateTime CreatedAt { get; private set; }
 
         [JsonIgnore]
-        public bool IsValid => !string.IsNullOrEmpty(this.SessionId)
-                               && this.CreatedAt.AddMinutes(Constants.SESSION_EXPIRATION_TIME_MINUTES) > this.TimeStampProvider.ProvideTime();
+        public bool IsValid => !string.IsNullOrEmpty(SessionId)
+                               && CreatedAt.AddMinutes(Constants.SESSION_EXPIRATION_TIME_MINUTES) > TimeStampProvider.ProvideTime();
 
         [JsonProperty]
         public Platform Platform { get; private set; }
@@ -37,20 +37,20 @@
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return string.Equals(this.SessionId, other.SessionId);
+            return string.Equals(SessionId, other.SessionId);
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return this.Equals((HiRezApiSession) obj);
+            if (obj.GetType() != GetType()) return false;
+            return Equals((HiRezApiSession) obj);
         }
 
         public override int GetHashCode()
         {
-            return this.SessionId != null ? this.SessionId.GetHashCode() : 0;
+            return SessionId != null ? SessionId.GetHashCode() : 0;
         }
 
         public static bool operator ==(HiRezApiSession left, HiRezApiSession right)
@@ -65,7 +65,7 @@
 
         public override string ToString()
         {
-            return $"{nameof(this.CreatedAt)}: {this.CreatedAt}, {nameof(this.IsValid)}: {this.IsValid}, {nameof(this.SessionId)}: {this.SessionId}";
+            return $"{nameof(CreatedAt)}: {CreatedAt}, {nameof(IsValid)}: {IsValid}, {nameof(SessionId)}: {SessionId}";
         }
     }
 }

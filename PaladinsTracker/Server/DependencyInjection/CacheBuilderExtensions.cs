@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using PaladinsTracker.Server.Caching;
 using PaladinsTracker.Server.Configuration;
 using StackExchange.Redis;
+using StackExchange.Redis.Extensions.Core;
+using StackExchange.Redis.Extensions.Utf8Json;
 
 namespace PaladinsTracker.Server.DependencyInjection
 {
@@ -23,6 +25,7 @@ namespace PaladinsTracker.Server.DependencyInjection
                 ConnectionMultiplexer.Connect(redisCacheSettings.ConnectionString));
             services.AddStackExchangeRedisCache(options => options.Configuration = redisCacheSettings.ConnectionString);
             services.AddSingleton<IResponseCacheService, ResponseCacheService>();
+            services.AddSingleton<ISerializer, Utf8JsonSerializer>();
         }
     }
 }
